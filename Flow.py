@@ -813,13 +813,13 @@ class Flow:
 				"title": titles[num],
 				"image_url": image_urls[num],
 				"subtitle": subtitles[num],
-				"default_action": {
-					"type": "web_url",
-					"url": link_urls[num],
+				# "default_action": {
+					# "type": "web_url",
+					# "url": link_urls[num],
 					# "messenger_extensions": True,
-					"webview_height_ratio": "tall",
-					"fallback_url": "https://advisor.lifeshift.co.jp"
-				},
+					# "webview_height_ratio": "tall",
+					# "fallback_url": "https://advisor.lifeshift.co.jp"
+				# },
 				"buttons": buttons
 			}
 			elements.append(carousel_dict)
