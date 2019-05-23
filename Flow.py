@@ -43,107 +43,47 @@ class Flow:
 			}
 		],
 
-		"具体的な流れを見る": [
+		"コンサルティング": [
 			{
 				"method": "send_message",
-				"text": "それでは、見ていきましょう。"
-			},
-			{
-				"method": "send_carousel_buttonless",
-				"titles": [
-					"1. チャット形式で会話が進みます。",
-					"2. あなたは選択肢を選ぶだけです。",
-					"3. あなたの借金状況を診断します。"
-				],
-				"subtitles": [
-					"私が会話をリードします。安心してください。",
-					"リラックスして自分に当てはまる選択肢を選んでください。",
-					"借金状況とその解決方法をお伝えします。"
-				],
-				"image_urls": [
-					"https://raw.githubusercontent.com/pomtaro/pic-garage/master/unDraw_sketch/explain1.png",
-					"https://raw.githubusercontent.com/pomtaro/pic-garage/master/unDraw_sketch/explain2.png",
-					"https://raw.githubusercontent.com/pomtaro/pic-garage/master/unDraw_sketch/explain3.png"
-				]
-			},
-			{
-				"method": "send_quick_reply",
-				"text": "私がリードしますので、大まかに理解できれば大丈夫です。",
-				"buttons": ["わかりました"]
+				"text": "申し訳ありません、現在準備中です。"
 			}
 		],
 
-		"わかりました": [
-			{
-				"method": "send_image",
-				"image_url": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-							 "unDraw_sketch/Get%20started.png"
-			},
+		"ITサービス": [
 			{
 				"method": "send_quick_reply",
-				"text": "さあ、始めましょう",
-				"buttons": ["始める"]
+				"text": "お問い合わせありがとうございます。\n"
+				        "ご興味のある分野をお選びください。",
+				"buttons": ["情報共有", "勤怠管理", "資料作成", "助成金支援"]
 			}
 		],
 
-		"始める": [
+		"情報共有": [
 			{
 				"method": "send_message",
-				"text": "リラックスしてください、質問は4つです。"
-			},
-			{
-				"method": "send_image",
-				"image_url": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/unDraw_sketch/question1.png"
-			},
-			{
-				"method": "send_quick_reply",
-				"text": "下から選んでください。",
-				"buttons": ["生活費のため", "娯楽のため", "失職、退職", "病気", "ギャンブル"]
+				"text": "Slackをお試しください。"
 			}
 		],
 
-		"生活費のため": [
+		"勤怠管理": [
 			{
-				"method": "set_debt_reason_to_firestore"
-			},
-			{
-				"method": "send_image",
-				"image_url": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/unDraw_sketch/question2.png"
-			},
-			{
-				"method": "send_quick_reply",
-				"text": "下から選んでください。",
-				"buttons": ["1社", "2社", "3社以上"]
+				"method": "send_message",
+				"text": "Smart kintAIをお試しください。"
 			}
 		],
 
-		"娯楽のため": [
+		"資料作成": [
 			{
-				"method": "set_debt_reason_to_firestore"
-			},
-			{
-				"method": "send_image",
-				"image_url": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/unDraw_sketch/question2.png"
-			},
-			{
-				"method": "send_quick_reply",
-				"text": "下から選んでください。",
-				"buttons": ["1社", "2社", "3社以上"]
+				"method": "send_message",
+				"text": "Beautiful.AIをお試しください。"
 			}
 		],
 
-		"失職、退職": [
+		"助成金支援": [
 			{
-				"method": "set_debt_reason_to_firestore"
-			},
-			{
-				"method": "send_image",
-				"image_url": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/unDraw_sketch/question2.png"
-			},
-			{
-				"method": "send_quick_reply",
-				"text": "下から選んでください。",
-				"buttons": ["1社", "2社", "3社以上"]
+				"method": "send_message",
+				"text": "クラウドシエンをお試しください。"
 			}
 		],
 
