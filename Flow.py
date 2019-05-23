@@ -47,7 +47,13 @@ class Flow:
 			{
 				"method": "send_message",
 				"text": "申し訳ありません、現在準備中です。"
+			},
+			{
+				"method": "send_quick_reply",
+				"text": "他にご覧になりたいことはありますか？",
+				"buttons": ["コンサルティング", "ITサービス"]
 			}
+		
 		],
 
 		"ITサービス": [
