@@ -8,12 +8,15 @@ from firebase_admin import firestore
 
 
 class Flow:
-
+	
+	'''
     ref = "/app/lawyer-bot-database-firebase-adminsdk-sbxi6-177e64c136.json"
     cred = credentials.Certificate(ref)
     firebase_admin.initialize_app(cred)
     db = firestore.client()
-
+	'''
+	
+	
     flow_dict = {
         "スタート": [
             {
