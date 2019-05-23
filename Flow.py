@@ -87,7 +87,7 @@ class Flow:
 				"subtitles": ["助成金AIマッチング"],
 				"image_urls": ["https://github.com/pomtaro/pic-garage/blob/master/consulting/cloud_sien.jpeg?raw=true"],
 				"link_urls": ["https://crowdsien.com/"],
-				"button_titles": [["Webサイトを見る"]]
+				"buttons_titles": [["Webサイトを見る"]]
 			}
 		],
 
@@ -601,7 +601,7 @@ class Flow:
 					image_urls = self.flow_dict[message_text][item_number]["image_urls"]
 					link_urls = self.flow_dict[message_text][item_number]["link_urls"]
 					buttons_titles = self.flow_dict[message_text][item_number]["buttons_titles"]
-					self.send_carousel(recipient_id, titles, subtitles, image_urls, link_urls, buttons_titles, access_token)
+					self.send_carousel_link(recipient_id, titles, subtitles, image_urls, link_urls, buttons_titles, access_token)
 				elif method == "continue_chat":
 					self.continue_chat(recipient_id, access_token)
 
