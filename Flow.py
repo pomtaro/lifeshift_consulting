@@ -82,7 +82,7 @@ class Flow:
 
 		"助成金支援": [
 			{
-				"method": "send_carousel",
+				"method": "send_carousel_link",
 				"titles": ["クラウドシエン"],
 				"subtitles": ["助成金AIマッチング"],
 				"image_urls": ["https://github.com/pomtaro/pic-garage/blob/master/consulting/cloud_sien.jpeg?raw=true"],
