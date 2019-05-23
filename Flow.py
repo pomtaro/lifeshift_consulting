@@ -61,23 +61,53 @@ class Flow:
 
 		"情報共有": [
 			{
-				"method": "send_message",
-				"text": "Slackをお試しください。"
+				"method": "send_carousel_link",
+				"titles": ["Slack"],
+				"subtitles": ["ビジネスを前進させるコミュニケーションサービス"],
+				"image_urls": ["https://github.com/pomtaro/pic-garage/blob/master/consulting/slack.jpg?raw=true"],
+				"link_urls": ["https://slack.com/intl/ja-jp/"],
+				"buttons_titles": [["Webサイトを見る"]]
+			},
+			{
+				"method": "send_quick_reply",
+				"text": "他にご覧になりたいことはありますか？",
+				"buttons": ["コンサルティング", "ITサービス"]
 			}
+		
 		],
 
 		"勤怠管理": [
 			{
-				"method": "send_message",
-				"text": "Smart kintAIをお試しください。"
+				"method": "send_carousel_link",
+				"titles": ["Smart kintAI"],
+				"subtitles": ["AIによる自動シフト調整"],
+				"image_urls": ["https://github.com/pomtaro/pic-garage/blob/master/consulting/smartkintAI.png?raw=true"],
+				"link_urls": ["https://smartkintai.geeklabs.co.jp/"],
+				"buttons_titles": [["Webサイトを見る"]]
+			},
+			{
+				"method": "send_quick_reply",
+				"text": "他にご覧になりたいことはありますか？",
+				"buttons": ["コンサルティング", "ITサービス"]
 			}
+		
 		],
 
 		"資料作成": [
 			{
-				"method": "send_message",
-				"text": "Beautiful.AIをお試しください。"
+				"method": "send_carousel_link",
+				"titles": ["Beautiful.AI"],
+				"subtitles": ["AIによる半自動資料作成"],
+				"image_urls": ["https://github.com/pomtaro/pic-garage/blob/master/consulting/beautifulAI.png?raw=true"],
+				"link_urls": ["https://www.beautiful.ai/"],
+				"buttons_titles": [["Webサイトを見る"]]
+			},
+			{
+				"method": "send_quick_reply",
+				"text": "他にご覧になりたいことはありますか？",
+				"buttons": ["コンサルティング", "ITサービス"]
 			}
+		
 		],
 
 		"助成金支援": [
@@ -88,6 +118,11 @@ class Flow:
 				"image_urls": ["https://github.com/pomtaro/pic-garage/blob/master/consulting/cloud_sien.jpeg?raw=true"],
 				"link_urls": ["https://crowdsien.com/"],
 				"buttons_titles": [["Webサイトを見る"]]
+			},
+			{
+				"method": "send_quick_reply",
+				"text": "他にご覧になりたいことはありますか？",
+				"buttons": ["コンサルティング", "ITサービス"]
 			}
 		],
 
@@ -813,13 +848,6 @@ class Flow:
 				"title": titles[num],
 				"image_url": image_urls[num],
 				"subtitle": subtitles[num],
-				# "default_action": {
-					# "type": "web_url",
-					# "url": link_urls[num],
-					# "messenger_extensions": True,
-					# "webview_height_ratio": "tall",
-					# "fallback_url": "https://advisor.lifeshift.co.jp"
-				# },
 				"buttons": buttons
 			}
 			elements.append(carousel_dict)
