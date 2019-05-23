@@ -654,9 +654,6 @@ class Flow:
 				elif method == "continue_chat":
 					self.continue_chat(recipient_id, access_token)
 
-			if not message_text == "続きから始める":
-				self.set_user_most_recent_word_to_firestore(recipient_id, message_text)
-
 		else:
 			self.send_message_for_else(recipient_id, access_token)
 
