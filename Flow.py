@@ -17,11 +17,8 @@ class Flow:
 			},
 			{
 				"method": "send_quick_reply",
-				"text": "こんにちは、初めまして。\n私と一緒にあなたの借金状況を見直してみましょう。",
+				"text": "こんにちは、初めまして。\nライフシフト株式会社　コンサルティング事業部　サポートセンターです。",
 				"buttons": ["こんにちは"]
-			},
-			{
-				"method": "set_id_to_firestore"
 			}
 		],
 
@@ -32,28 +29,17 @@ class Flow:
 			},
 			{
 				"method": "send_quick_reply",
-				"text": "こんにちは、初めまして。\n私と一緒にあなたの借金状況を見直してみましょう。",
+				"text": "こんにちは、初めまして。\nライフシフト株式会社　コンサルティング事業部　サポートセンターです。",
 				"buttons": ["こんにちは"]
-			},
-			{
-				"method": "set_id_to_firestore"
 			}
-
 		],
 
 		"こんにちは": [
 			{
-				"method": "send_message",
-				"text": "日本では実に多くの方が借金について悩んでいます。"
-			},
-			{
-				"method": "send_image",
-				"image_url": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/unDraw_sketch/debt.png"
-			},
-			{
 				"method": "send_quick_reply",
-				"text": "しかし、借金をうまく返していく方法もあります。\n私はそのお手伝いをします。具体的な流れを見てみましょう。",
-				"buttons": ["具体的な流れを見る"]
+				"text": "弊社の時間創出コンサルティングに関するお問い合わせですか？\n"
+						"ITサービスの紹介に関するお問い合わせですか？",
+				"buttons": ["コンサルティング", "ITサービス"]
 			}
 		],
 
@@ -665,32 +651,6 @@ class Flow:
 					subtitles = self.flow_dict[message_text][item_number]["subtitles"]
 					image_urls = self.flow_dict[message_text][item_number]["image_urls"]
 					self.send_carousel_buttonless(recipient_id, titles, subtitles, image_urls, access_token)
-				elif method == "record_debt_companies":
-					self.record_debt_companies(message_text)
-				elif method == "record_debt_prices":
-					self.record_debt_prices(message_text)
-				elif method == "record_pay_per_month":
-					self.record_pay_per_month(message_text)
-				elif method == "decide_consolidation_image":
-					self.decide_consolidation_image(recipient_id)
-				elif method == "decide_consolidation_comment":
-					self.decide_consolidation_comment(recipient_id)
-				elif method == "decide_consolidation_recommendation":
-					self.decide_consolidation_recommendation(recipient_id)
-				elif method == "set_id_to_firestore":
-					self.set_id_to_firestore(recipient_id)
-				elif method == "set_debt_reason_to_firestore":
-					self.set_debt_reason_to_firestore(recipient_id, message_text)
-				elif method == "set_debt_companies_to_firestore":
-					self.set_debt_companies_to_firestore(recipient_id, message_text)
-				elif method == "set_debt_prices_to_firestore":
-					self.set_debt_prices_to_firestore(recipient_id, message_text)
-				elif method == "set_pay_per_month_to_firestore":
-					self.set_pay_per_month_to_firestore(recipient_id, message_text)
-				elif method == "register_lawyer":
-					self.register_lawyer(recipient_id)
-				elif method == "send_info_to_lawyers":
-					self.send_info_to_lawyers(recipient_id, access_token)
 				elif method == "continue_chat":
 					self.continue_chat(recipient_id, access_token)
 
@@ -883,287 +843,3 @@ class Flow:
 
 		requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
 
-	def get_user_debt_info(self, recipient_id):
-		doc_ref = self.db.collection(u"users").document(recipient_id)
-		info_dict = dict(doc_ref.get().to_dict())
-
-		try:
-			debt_companies = info_dict["debt_companies"]
-			debt_prices = info_dict["debt_prices"]
-			pay_per_month = info_dict["pay_per_month"]
-
-			return debt_companies, debt_prices, pay_per_month
-		except:
-			return "1社", "0~100万", "0~1万"
-
-	def decide_consolidation_group(self, recipient_id):
-
-		debt_companies, debt_prices, pay_per_month = self.get_user_debt_info(recipient_id)
-
-		if debt_prices == "0~100万":
-			if pay_per_month == "0~1万":
-				return "individual rehabilitation"
-			elif pay_per_month == "1~5万" or pay_per_month == "5~10万" or pay_per_month == "10万以上":
-				return "voluntary liquidation"
-		elif debt_prices == "100~500万":
-			if pay_per_month == "0~1万":
-				return "personal bankruptcy"
-			elif pay_per_month == "1~5万":
-				return "individual rehabilitation"
-			elif pay_per_month == "5~10万" or pay_per_month == "10万以上":
-				return "voluntary liquidation"
-		elif debt_prices == "500~1000万":
-			if pay_per_month == "0~1万":
-				return "personal bankruptcy"
-			elif pay_per_month == "1~5万" or pay_per_month == "5~10万":
-				return "individual rehabilitation"
-			elif pay_per_month == "10万以上":
-				return "voluntary liquidation"
-		elif debt_prices == "1000~2000万":
-			if pay_per_month == "0~1万" or pay_per_month == "1~5万":
-				return "personal bankruptcy"
-			elif pay_per_month == "5~10万" or pay_per_month == "10万以上":
-				return "individual rehabilitation"
-		elif debt_prices == "2000万以上":
-			if pay_per_month == "0~1万" or pay_per_month == "1~5万" or pay_per_month == "5~10万":
-				return "personal bankruptcy"
-			elif pay_per_month == "10万以上":
-				return "individual rehabilitation"
-
-	def decide_consolidation_image(self, recipient_id):
-		consolidation_group = self.decide_consolidation_group(recipient_id)
-
-		urls_dict = {
-			"voluntary liquidation": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-									 "unDraw_sketch/debt_danger11.png",
-			"individual rehabilitation": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-										 "unDraw_sketch/debt_danger21.png",
-			"personal bankruptcy": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-								   "unDraw_sketch/debt_danger31.png"
-		}
-
-		if consolidation_group == "voluntary liquidation":
-			self.flow_dict["見てみる"][3]["image_url"] = urls_dict["voluntary liquidation"]
-		elif consolidation_group == "individual rehabilitation":
-			self.flow_dict["見てみる"][3]["image_url"] = urls_dict["individual rehabilitation"]
-		elif consolidation_group == "personal bankruptcy":
-			self.flow_dict["見てみる"][3]["image_url"] = urls_dict["personal bankruptcy"]
-
-	def decide_consolidation_comment(self, recipient_id):
-		consolidation_group = self.decide_consolidation_group(recipient_id)
-
-		comments_dict = {
-			"voluntary liquidation": "あなたの借金ヤバイ度は60%です。\n"
-									 "まだ間に合います。早めに借金整理を行う必要があります。",
-			"individual rehabilitation": "あなたの借金ヤバイ度は80％です。\n"
-										 "まだ手段はあります。早めに行動しましょう。",
-			"personal bankruptcy": "あなたの借金ヤバイ度は100％です。\n"
-								   "いますぐ行動しましょう。助けてくれる専門家がいます。"
-		}
-
-		if consolidation_group == "voluntary liquidation":
-			self.flow_dict["見てみる"][4]["text"] = comments_dict["voluntary liquidation"]
-		elif consolidation_group == "individual rehabilitation":
-			self.flow_dict["見てみる"][4]["text"] = comments_dict["individual rehabilitation"]
-		elif consolidation_group == "personal bankruptcy":
-			self.flow_dict["見てみる"][4]["text"] = comments_dict["personal bankruptcy"]
-
-	def decide_consolidation_recommendation(self, recipient_id):
-		consolidation_group = self.decide_consolidation_group(recipient_id)
-
-		urls_dict = {
-			"voluntary liquidation_recommended": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-												 "unDraw_sketch/%E4%BB%BB%E6%84%8F%E6%95%B4%E7%90%86.png",
-			"individual rehabilitation_recommended": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-													 "unDraw_sketch/%E5%80%8B%E4%BA%BA%E5%86%8D%E7%94%9F.png",
-			"personal bankruptcy_recommended": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-											   "unDraw_sketch/%E8%87%AA%E5%B7%B1%E7%A0%B4%E7%94%A3.png",
-			"voluntary liquidation_other": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-										   "unDraw_sketch/%E4%BB%BB%E6%84%8F%E6%95%B4%E7%90%86_other.png",
-			"individual rehabilitation_other": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-											   "unDraw_sketch/%E5%80%8B%E4%BA%BA%E5%86%8D%E7%94%9F_other.png",
-			"personal bankruptcy_other": "https://raw.githubusercontent.com/pomtaro/pic-garage/master/"
-										 "unDraw_sketch/%E8%87%AA%E5%B7%B1%E7%A0%B4%E7%94%A3_other.png"
-		}
-
-		if consolidation_group == "voluntary liquidation":
-			self.flow_dict["確認する"][2]["titles"] = ["任意整理",
-												   "個人再生",
-												   "自己破産"]
-			self.flow_dict["確認する"][2]["subtitles"] = ["任意整理は最小限のリスクで借金の負担を減らす方法です。",
-													  "個人再生は財産を残しながら借金を大きく減らす方法です。",
-													  "自己破産は借金をすべて無くす方法です。"]
-			self.flow_dict["確認する"][2]["image_urls"] = [urls_dict["voluntary liquidation_recommended"],
-													   urls_dict["individual rehabilitation_other"],
-													   urls_dict["personal bankruptcy_other"]]
-			self.flow_dict["確認する"][2]["buttons_titles"] = [["任意整理を詳しく見る"],
-														   ["個人再生を詳しく見る"],
-														   ["自己破産を詳しく見る"]]
-		elif consolidation_group == "individual rehabilitation":
-			self.flow_dict["確認する"][2]["titles"] = ["個人再生",
-												   "任意整理",
-												   "自己破産"]
-			self.flow_dict["確認する"][2]["subtitles"] = ["個人再生は財産を残しながら借金を大きく減らす方法です。",
-													  "任意整理は最小限のリスクで借金の負担を減らす方法です。",
-													  "自己破産は借金をすべて無くす方法です。"]
-			self.flow_dict["確認する"][2]["image_urls"] = [urls_dict["individual rehabilitation_recommended"],
-													   urls_dict["voluntary liquidation_other"],
-													   urls_dict["personal bankruptcy_other"]]
-			self.flow_dict["確認する"][2]["buttons_titles"] = [["個人再生を詳しく見る"],
-														   ["任意整理を詳しく見る"],
-														   ["自己破産を詳しく見る"]]
-		elif consolidation_group == "personal bankruptcy":
-			self.flow_dict["確認する"][2]["titles"] = ["自己破産",
-												   "任意整理",
-												   "個人再生"]
-			self.flow_dict["確認する"][2]["subtitles"] = ["自己破産は借金をすべて無くす方法です。",
-													  "任意整理は最小限のリスクで借金の負担を減らす方法です。",
-													  "個人再生は財産を残しながら借金を大きく減らす方法です。"]
-			self.flow_dict["確認する"][2]["image_urls"] = [urls_dict["personal bankruptcy_recommended"],
-													   urls_dict["voluntary liquidation_other"],
-													   urls_dict["individual rehabilitation_other"]]
-			self.flow_dict["確認する"][2]["buttons_titles"] = [["自己破産を詳しく見る"],
-														   ["任意整理を詳しく見る"],
-														   ["個人再生を詳しく見る"]]
-
-	def set_id_to_firestore(self, recipient_id):
-
-		data = {
-			u"id": recipient_id,
-			u"first_timestamp": firestore.SERVER_TIMESTAMP
-		}
-		try:
-			self.db.collection(u"users").document(recipient_id).update(data)
-		except:
-			self.db.collection(u"users").document(recipient_id).set(data)
-
-	def set_debt_reason_to_firestore(self, recipient_id, message_text):
-
-		data = {
-			u"debt_reason": message_text
-		}
-
-		try:
-			self.db.collection(u"users").document(recipient_id).update(data)
-		except:
-			self.db.collection(u"users").document(recipient_id).set(data)
-
-	def set_debt_companies_to_firestore(self, recipient_id, message_text):
-
-		data = {
-			u"debt_companies": message_text
-		}
-
-		try:
-			self.db.collection(u"users").document(recipient_id).update(data)
-		except:
-			self.db.collection(u"users").document(recipient_id).set(data)
-
-	def set_debt_prices_to_firestore(self, recipient_id, message_text):
-
-		data = {
-			u"debt_prices": message_text
-		}
-		try:
-			self.db.collection(u"users").document(recipient_id).update(data)
-		except:
-			self.db.collection(u"users").document(recipient_id).set(data)
-
-	def set_pay_per_month_to_firestore(self, recipient_id, message_text):
-
-		data = {
-			u"pay_per_month": message_text
-		}
-		try:
-			self.db.collection(u"users").document(recipient_id).update(data)
-		except:
-			self.db.collection(u"users").document(recipient_id).set(data)
-
-	def record_step(self, recipient_id, message_text):
-
-		data_update = {
-			u"words." + message_text: u"done"
-		}
-
-		data_set = {
-			u"words": {
-				message_text: u"done"
-			}
-		}
-
-		try:
-			self.db.collection(u"users").document(recipient_id).update(data_update)
-		except:
-			self.db.collection(u"users").document(recipient_id).set(data_set)
-
-	def register_lawyer(self, recipient_id):
-
-		data = {
-			"id." + recipient_id: recipient_id
-		}
-
-		try:
-			self.db.collection("lawyers").document("ID").update(data)
-		except:
-			self.db.collection("lawyers").document("ID").set(data)
-
-	def get_lawyers_id(self):
-
-		doc_ref = self.db.collection(u"lawyers").document(u"ID")
-		id_dict = dict(doc_ref.get().to_dict())
-
-		ids = []
-		for id in id_dict.values():
-			ids.append(id)
-
-		return ids
-
-	def send_info_to_lawyers(self, recipient_id, access_token):
-
-		debt_companies, debt_prices, pay_per_month = self.get_user_debt_info(recipient_id)
-		print(debt_companies, debt_prices, pay_per_month)
-		ids = self.get_lawyers_id()
-		print(ids)
-
-		text = "チャットボット利用者の情報が届きました。"
-		info_text = "借り入れ社数、{}\n" \
-					"借り入れ総額、{}\n" \
-					"毎月返済額、{}".format(debt_companies, debt_prices, pay_per_month)
-		for lawyer_id in ids:
-			self.send_message(lawyer_id, text, access_token)
-			self.send_message(lawyer_id, info_text, access_token)
-
-	def get_user_last_word(self, recipient_id):
-		doc_ref = self.db.collection(u"users").document(recipient_id)
-		doc_dict = dict(doc_ref.get().to_dict())
-
-		last_word = ""
-
-		for key in list(self.flow_dict.keys()):
-			if key == 'スタート' or key == 'Get Started':
-				pass
-			else:
-				if key in list(doc_dict['words']):
-					last_word = key
-				else:
-					pass
-		return last_word
-
-	def set_user_most_recent_word_to_firestore(self, recipient_id, message_text):
-
-		data = {
-			u"last_word": message_text
-		}
-		try:
-			self.db.collection(u"users").document(recipient_id).update(data)
-		except:
-			self.db.collection(u"users").document(recipient_id).set(data)
-
-	def get_user_most_recent_word(self, recipient_id):
-		try:
-			doc_ref = self.db.collection(u"users").document(recipient_id)
-			doc_dict = dict(doc_ref.get().to_dict())
-
-			return doc_dict["last_word"]
-		except:
-			return "スタート"
