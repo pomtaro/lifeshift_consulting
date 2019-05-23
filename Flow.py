@@ -597,26 +597,19 @@ class Flow:
 		else:
 			self.send_message_for_else(recipient_id, access_token)
 
-	def generate_random_sorry(self):
-		sorry_words = [
-			"すみません、自由なメッセージには対応してないんです。",
-			"すみません、選択肢と異なります。",
-			"間違えてしまったのですね、誰でもあることです。"
-		]
+	def generate_sorry(self):
+		sorry_words = "大変申し訳ありません。\n" \
+		              "ご回答は選択肢よりお願い致します。"
 
-		return random.choice(sorry_words)
+		return sorry_words
 
 	def send_message_for_else(self, recipient_id, access_token):
-		text = self.generate_random_sorry()
+		text = self.generate_sorry()
 		self.send_message(recipient_id, text, access_token)
 
-		text = "続きから始めますか？\nそれともセルフチェックに進みますか？"
-		buttons = ["続きから始める", "セルフチェックに進む"]
+		text = "お手数をおかけ致しますが、最初からスタートします。"
+		buttons = ["スタート"]
 		self.send_quick_reply(recipient_id, text, buttons, access_token)
-
-	def continue_chat(self, recipient_id, access_token):
-		most_recent_word = self.get_user_most_recent_word(recipient_id)
-		self.execute_method(recipient_id, most_recent_word, access_token)
 
 	def send_message(self, recipient_id, text, access_token):
 
