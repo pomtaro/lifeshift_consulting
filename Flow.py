@@ -803,9 +803,9 @@ class Flow:
 
 			for button_title in buttons_titles[num]:
 				button_dict = {
-					"type": "postback",
+					"type": "web_url",
+					"url": link_urls[num],
 					"title": button_title,
-					"payload": "payload : " + button_title
 				}
 				buttons.append(button_dict)
 
