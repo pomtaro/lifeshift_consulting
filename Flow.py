@@ -596,6 +596,7 @@ class Flow:
 					image_urls = self.flow_dict[message_text][item_number]["image_urls"]
 					self.send_carousel_buttonless(recipient_id, titles, subtitles, image_urls, access_token)
 				elif method == "send_carousel_link":
+					print("send_carousel_link")
 					titles = self.flow_dict[message_text][item_number]["titles"]
 					subtitles = self.flow_dict[message_text][item_number]["subtitles"]
 					image_urls = self.flow_dict[message_text][item_number]["image_urls"]
