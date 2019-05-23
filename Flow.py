@@ -814,7 +814,7 @@ class Flow:
 				"default_action": {
 					"type": "web_url",
 					"url": link_urls[num],
-					"messenger_extensions": True,
+					# "messenger_extensions": True,
 					"webview_height_ratio": "tall",
 					"fallback_url": "https://advisor.lifeshift.co.jp"
 				},
