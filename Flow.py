@@ -82,8 +82,12 @@ class Flow:
 
 		"助成金支援": [
 			{
-				"method": "send_message",
-				"text": "https://www.facebook.com/lifeshiftconsulting/posts/908079962869793?__xts__[0]=68.ARDGTTRRgyf8kgYhdVBBPlQ16ueeubw17D5wQdeXtp-00wYokgYHHiDlaPRejYQpZPZ9OFRoqIx0--VhMMnz57kECOjuwBJuzioSpsuwyRRTn5mHroSRN9B-il3JC8Q5_sAlTXltvbrDv-t2V4Q6s--OJ9l7ZDMv5V5uSxbOYsHBPo-2NpRRQIyXKBYqmrTQbwzW3IOHvyRqJNz4h8TGA-_fNDuhmVLf-GbB81b0-BR_CIVzlc-dEBggwZUWkIT2go_mCPoJeezxbBG9QdhvTpL_JoDTfUu9WWBrqzKcg5wXWVkLXtbv_0o8capkrqnvYPy8HnBgrfgNFcCHy5GZlhli_Ca-8XM&__tn__=-R"
+				"method": "send_carousel",
+				"titles": ["クラウドシエン"],
+				"subtitles": ["助成金AIマッチング"],
+				"image_urls": ["https://github.com/pomtaro/pic-garage/blob/master/consulting/cloud_sien.jpeg?raw=true"],
+				"link_urls": ["https://crowdsien.com/"],
+				"button_titles": [["Webサイトを見る"]]
 			}
 		],
 
@@ -591,6 +595,13 @@ class Flow:
 					subtitles = self.flow_dict[message_text][item_number]["subtitles"]
 					image_urls = self.flow_dict[message_text][item_number]["image_urls"]
 					self.send_carousel_buttonless(recipient_id, titles, subtitles, image_urls, access_token)
+				elif method == "send_carousel_link":
+					titles = self.flow_dict[message_text][item_number]["titles"]
+					subtitles = self.flow_dict[message_text][item_number]["subtitles"]
+					image_urls = self.flow_dict[message_text][item_number]["image_urls"]
+					link_urls = self.flow_dict[message_text][item_number]["link_urls"]
+					buttons_titles = self.flow_dict[message_text][item_number]["buttons_titles"]
+					self.send_carousel(recipient_id, titles, subtitles, image_urls, link_urls, buttons_titles, access_token)
 				elif method == "continue_chat":
 					self.continue_chat(recipient_id, access_token)
 
@@ -772,3 +783,58 @@ class Flow:
 
 		requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
 
+	def send_carousel_link(self, recipient_id, titles,  subtitles, image_urls, link_urls, buttons_titles, access_token):
+
+		params = {
+			"access_token": access_token
+		}
+		headers = {
+			"Content-Type": "application/json"
+		}
+
+		elements = []
+		carousel_number = len(titles)
+
+		for num in range(carousel_number):
+
+			buttons = []
+
+			for button_title in buttons_titles[num]:
+				button_dict = {
+					"type": "postback",
+					"title": button_title,
+					"payload": "payload : " + button_title
+				}
+				buttons.append(button_dict)
+
+			carousel_dict = {
+				"title": titles[num],
+				"image_url": image_urls[num],
+				"subtitle": subtitles[num],
+				"default_action": {
+					"type": "web_url",
+					"url": link_urls[num],
+					"messenger_extensions": True,
+					"webview_height_ratio": "tall",
+					"fallback_url": "https://advisor.lifeshift.co.jp"
+				},
+				"buttons": buttons
+			}
+			elements.append(carousel_dict)
+
+		data = json.dumps({
+			"recipient": {
+				"id": recipient_id
+			},
+			"message": {
+				"attachment": {
+					"type": "template",
+					"payload": {
+						"template_type": "generic",
+						"elements": elements
+					}
+				}
+			}
+		})
+
+		requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
