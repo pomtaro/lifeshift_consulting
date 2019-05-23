@@ -601,6 +601,7 @@ class Flow:
 					subtitles = self.flow_dict[message_text][item_number]["subtitles"]
 					image_urls = self.flow_dict[message_text][item_number]["image_urls"]
 					link_urls = self.flow_dict[message_text][item_number]["link_urls"]
+					print(link_urls)
 					buttons_titles = self.flow_dict[message_text][item_number]["buttons_titles"]
 					self.send_carousel_link(recipient_id, titles, subtitles, image_urls, link_urls, buttons_titles, access_token)
 				elif method == "continue_chat":
