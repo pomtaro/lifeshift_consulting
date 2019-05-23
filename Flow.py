@@ -83,7 +83,7 @@ class Flow:
 		"助成金支援": [
 			{
 				"method": "send_message",
-				"text": "クラウドシエンをお試しください。"
+				"text": "https://www.facebook.com/lifeshiftconsulting/posts/908079962869793?__xts__[0]=68.ARDGTTRRgyf8kgYhdVBBPlQ16ueeubw17D5wQdeXtp-00wYokgYHHiDlaPRejYQpZPZ9OFRoqIx0--VhMMnz57kECOjuwBJuzioSpsuwyRRTn5mHroSRN9B-il3JC8Q5_sAlTXltvbrDv-t2V4Q6s--OJ9l7ZDMv5V5uSxbOYsHBPo-2NpRRQIyXKBYqmrTQbwzW3IOHvyRqJNz4h8TGA-_fNDuhmVLf-GbB81b0-BR_CIVzlc-dEBggwZUWkIT2go_mCPoJeezxbBG9QdhvTpL_JoDTfUu9WWBrqzKcg5wXWVkLXtbv_0o8capkrqnvYPy8HnBgrfgNFcCHy5GZlhli_Ca-8XM&__tn__=-R"
 			}
 		],
 
